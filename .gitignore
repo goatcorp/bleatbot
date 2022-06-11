@@ -1,0 +1,6 @@
+.env
+node_modules/
+dist/**/*.js
+
+prisma/database.db
+prisma/database.db-journal
