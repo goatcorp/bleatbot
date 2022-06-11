@@ -9,7 +9,7 @@
 - [x] franzbot-styled FAQ
 - [ ] DalamudPlugins issue checker
 - [ ] stale plugin PR notice
-- [ ] upcoming DIP merge noticce
+- [ ] upcoming DIP merge notice
 - [ ] caprine operator event sending
 
 ## setup
