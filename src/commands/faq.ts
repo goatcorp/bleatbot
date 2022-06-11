@@ -123,6 +123,4 @@ export default function faqCommand(argv: yargs.ArgumentsCamelCase) {
       leaveComment(body, responses.unknown);
       break;
   }
-
-  console.log(argv.body);
 }
