@@ -1,3 +1,5 @@
+// TODO: lock this file to certain users
+
 import yargs from "yargs";
 import { leaveComment } from "../util";
 import { IssueCommentEvent } from "@octokit/webhooks-types";

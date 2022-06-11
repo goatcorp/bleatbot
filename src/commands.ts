@@ -45,7 +45,11 @@ const parser = yargs
 export function parseCommand(comment: string, body: IssueCommentEvent) {
   parser.parse(comment, { body }, (err) => {
     if (err) {
-      leaveComment(body, ":warning: An error occured processing your command.");
+      leaveComment(
+        body,
+        ":warning: An error occurred processing your command."
+      );
+      console.error(err);
     }
   });
 }

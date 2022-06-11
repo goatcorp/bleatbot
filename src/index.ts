@@ -13,7 +13,6 @@ app.use(bodyParser());
 const router = new Router();
 
 router.post("/webhook", (ctx) => {
-  // verify the hash. fuck you ! operator if the user fucked this up they're stupid
   const hash = crypto
     .createHmac("sha256", process.env["GITHUB_WEBHOOK_SECRET"]!)
     .update(ctx.request.rawBody)
@@ -25,7 +24,6 @@ router.post("/webhook", (ctx) => {
     return;
   }
 
-  // fuck you
   let eventType = headers["x-github-event"] as string;
   switch (eventType) {
     case "issue_comment":
