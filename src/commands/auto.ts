@@ -16,6 +16,11 @@ enum AutomaticTaskType {
 
 const alreadyHaveTask =
   ":x: You already have an automatic task scheduled. Cancel it first with `@bleatbot cancelAuto`.";
+const notAuthorized = ":x: You aren't allowed to use this command.";
+
+const allowedUsers = process.env["AUTO_ALLOWED_USERS"]!.split(
+  ","
+).map((x: string) => x.toLowerCase());
 
 async function checkIfHasTask(id: number) {
   const task = await prisma.automaticTasks.findUnique({
@@ -31,6 +36,11 @@ export async function autoCloseCommand(argv: yargs.ArgumentsCamelCase) {
   const body = argv.body as IssueCommentEvent;
   if (await checkIfHasTask(body.issue.id)) {
     leaveComment(body, alreadyHaveTask);
+    return;
+  }
+
+  if (!allowedUsers.includes(body.sender.login.toLowerCase())) {
+    leaveComment(body, notAuthorized);
     return;
   }
 
@@ -73,12 +83,17 @@ export async function autoMergeCommand(argv: yargs.ArgumentsCamelCase) {
     return;
   }
 
+  if (!allowedUsers.includes(body.sender.login.toLowerCase())) {
+    leaveComment(body, notAuthorized);
+    return;
+  }
+
   if (!body.issue.pull_request) {
     leaveComment(body, ":x: This isn't a pull request.");
     return;
   }
 
-  if (body.issue.state === "closed" || body.issue.pull_request.merged_at) {
+  if (body.issue.state !== "open") {
     leaveComment(body, ":x: This pull request isn't open.");
     return;
   }
@@ -112,6 +127,11 @@ export async function autoMergeCommand(argv: yargs.ArgumentsCamelCase) {
 
 export async function cancelAutoCommand(argv: yargs.ArgumentsCamelCase) {
   const body = argv.body as IssueCommentEvent;
+
+  if (!allowedUsers.includes(body.sender.login.toLowerCase())) {
+    leaveComment(body, notAuthorized);
+    return;
+  }
 
   const task = await prisma.automaticTasks.findUnique({
     where: {
