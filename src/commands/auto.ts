@@ -15,12 +15,8 @@ enum AutomaticTaskType {
 }
 
 const alreadyHaveTask =
-  ":x: You already have an automatic task scheduled. Cancel it first with `@bleatbot cancelAuto`.";
+  ":x: You already have an automatic task scheduled. Cancel it first with `@bleatbot cancel`.";
 const notAuthorized = ":x: You aren't allowed to use this command.";
-
-const allowedUsers = process.env["AUTO_ALLOWED_USERS"]!.split(
-  ","
-).map((x: string) => x.toLowerCase());
 
 async function checkIfHasTask(id: number) {
   const task = await prisma.automaticTasks.findUnique({
@@ -39,7 +35,12 @@ export async function autoCloseCommand(argv: yargs.ArgumentsCamelCase) {
     return;
   }
 
-  if (!allowedUsers.includes(body.sender.login.toLowerCase())) {
+  const userAllowed = octokit.rest.orgs.checkMembershipForUser({
+    org: process.env["GITHUB_ORG"]!,
+    username: body.sender.login
+  });
+
+  if (!userAllowed) {
     leaveComment(body, notAuthorized);
     return;
   }
@@ -72,7 +73,7 @@ export async function autoCloseCommand(argv: yargs.ArgumentsCamelCase) {
 
   leaveComment(
     body,
-    `:white_check_mark: I'll close this **in ${closeAt}**. Cancel it with \`@bleatbot cancelAuto\`.`
+    `:white_check_mark: I'll close this **in ${closeAt}**. Cancel it with \`@bleatbot cancel\`.`
   );
 }
 
@@ -83,7 +84,12 @@ export async function autoMergeCommand(argv: yargs.ArgumentsCamelCase) {
     return;
   }
 
-  if (!allowedUsers.includes(body.sender.login.toLowerCase())) {
+  const userAllowed = octokit.rest.orgs.checkMembershipForUser({
+    org: process.env["GITHUB_ORG"]!,
+    username: body.sender.login
+  });
+
+  if (!userAllowed) {
     leaveComment(body, notAuthorized);
     return;
   }
@@ -121,14 +127,19 @@ export async function autoMergeCommand(argv: yargs.ArgumentsCamelCase) {
 
   leaveComment(
     body,
-    `:white_check_mark: I'll merge this **in ${mergeAt}**. Cancel it with \`@bleatbot cancelAuto\`.`
+    `:white_check_mark: I'll merge this **in ${mergeAt}**. Cancel it with \`@bleatbot cancel\`.`
   );
 }
 
 export async function cancelAutoCommand(argv: yargs.ArgumentsCamelCase) {
   const body = argv.body as IssueCommentEvent;
 
-  if (!allowedUsers.includes(body.sender.login.toLowerCase())) {
+  const userAllowed = octokit.rest.orgs.checkMembershipForUser({
+    org: process.env["GITHUB_ORG"]!,
+    username: body.sender.login
+  });
+
+  if (!userAllowed) {
     leaveComment(body, notAuthorized);
     return;
   }

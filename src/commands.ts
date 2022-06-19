@@ -21,7 +21,7 @@ const parser = yargs
     faqCommand
   )
   .command(
-    "autoClose <when>",
+    "autoclose <when>",
     false,
     (yargs) => {
       return yargs.positional("when", {
@@ -31,7 +31,7 @@ const parser = yargs
     autoCloseCommand
   )
   .command(
-    "autoMerge <when>",
+    "automerge <when>",
     false,
     (yargs) => {
       return yargs.positional("when", {
@@ -40,7 +40,7 @@ const parser = yargs
     },
     autoMergeCommand
   )
-  .command("cancelAuto", false, () => {}, cancelAutoCommand);
+  .command("cancel", false, () => {}, cancelAutoCommand);
 
 export function parseCommand(comment: string, body: IssueCommentEvent) {
   parser.parse(comment, { body }, (err) => {
