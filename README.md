@@ -1,6 +1,6 @@
 # bleatbot
 
-~~robogoat overlord~~ a GitHub bot for [goatcorp](https://github.com/goatcorp)
+~~robogoat overlord~~ a GitHub bot for goatcorp
 
 ## features
 
@@ -14,7 +14,7 @@
 
 ## setup
 
-- create a [personal access token](https://github.com/settings/tokens) with the `read:org`, `user`, and `repo` scopes (you might need more, i don't actually know, lol)
+- create a [personal access token](https://github.com/settings/tokens) with the `read:org`, `user`, and `repo` scopes (TODO: figure out if bot requires more)
 - `cp .env.example .env` and edit as required
 - create the webhooks pointing to bleatbot (all events is fine)
-- `pnpm i`, `prisma generate`, `pnpx tsc`, `node ./dist/index.js`, we balling
+- `pnpm i`, `prisma generate`, `pnpx tsc`, `node ./dist/index.js`
