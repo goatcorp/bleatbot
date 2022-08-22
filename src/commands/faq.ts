@@ -71,7 +71,20 @@ More info [here](https://goatcorp.github.io/faq/xl_troubleshooting#q-can-i-repai
 
 ![The Windows 10 File Explorer, cropped to the top left of the screen. The search bar reads %AppData%/XIVLauncher.](https://cdn.discordapp.com/attachments/687530726756712478/810897701864210472/explorer_2021-02-08_19-20-41.png)`,
 
+  deletePlugin: `General "how to delete a plugin" steps:
+  1. Close the game and XIVLauncher
+  2. Go to \`%AppData%/XIVLauncher/installedPlugins\`
+  3. Remove the folder[s] for the plugin[s]
+  4. Start the game now
+  5. Let us know if the issue persists
+
+![The Windows 10 File Explorer, cropped to the top left of the screen. The search bar reads %AppData%/XIVLauncher.](https://cdn.discordapp.com/attachments/687530726756712478/810897701864210472/explorer_2021-02-08_19-20-41.png)`,
+
   av: `Please whitelist or make AV exceptions for XIVLauncher. Details can be found [here](https://goatcorp.github.io/faq/xl_troubleshooting#q-how-do-i-whitelist-xivlauncher-and-dalamud-so-my-antivirus-leaves-them-alone).`,
+
+  thirdparty: `Support for third party plugins is not provided here. In order for us to help you, please remove your third party plugins.
+
+Third party plugins will have a yellow 3 on their icon in the plugin installer. If your game is crashing before you can uninstall them, you can also remove plugins manually - see the "deletePlugin" FAQ entry.`,
 
   unknown: "I couldn't find that FAQ entry. :("
 };
@@ -114,9 +127,19 @@ export default function faqCommand(argv: yargs.ArgumentsCamelCase) {
     case '"delete runtime"':
       leaveComment(body, responses.deleteRuntime);
 
+    case "deletePlugin":
+    case '"delete plugin"':
+      leaveComment(body, responses.deletePlugin);
+
     case "av":
     case "antivirus":
       leaveComment(body, responses.av);
+      break;
+
+    case "thirdparty":
+    case "3pp":
+    case "3":
+      leaveComment(body, responses.thirdparty);
       break;
 
     default:
